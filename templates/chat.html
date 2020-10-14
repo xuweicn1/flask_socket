@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聊天室</title>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+
+</head>
+
+<body>
+    <ul id="message"></ul>
+    <input type="text" id="myMseeage">
+    <button id="sendbutton">发送</button>
+
+
+</body>
+
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        var socket = io.connect('http://127.0.0.1:5000');
+
+        socket.on('connect',function(){
+            socket.send('sucess');
+        });
+
+        
+        socket.on('message',function(msg){
+            $("#message").append('<li>'+ msg +'</li>');
+            console.log('receiver message')
+
+        });
+
+        $('#sendbutton').on('click',function(){
+            socket.send($('#myMseeage').val());
+        });
+    })
+</script>
+
+
+
+</html>
